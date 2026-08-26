@@ -32,6 +32,38 @@ pnpm start
 
 浏览器访问 `http://localhost:3000`
 
+## 八字、人生 K 线与奇门融合（Streamlit）
+
+项目同时提供 Streamlit 一体化界面：复用原有 `lunar-javascript` 四柱与奇门核心，按每年生日正午生成年度奇门盘，再把日主五行关系和值符宫的门、星、神转为透明、可追溯的 0–100 可视化指数。它不是从第三方仓库复制代码，也不把指数描述为确定预测。
+
+```bash
+npm install
+python -m pip install -r requirements.txt
+streamlit run streamlit_app.py
+```
+
+浏览器访问 `http://localhost:8501`。侧栏可输入公历出生日期、时间、地点、分析主题和年份范围；页面会同时显示四柱、人生 K 线、逐年依据及出生时刻奇门九宫。
+
+还可以单独选择占卦日期、时间并填写所问事项；系统按该时刻生成带值符、值使、空亡与驿马标记的响应式洛书九宫盘。点击“生成 AI 解读”后，会把结构化盘面和问题发送到 DeepSeek Chat Completions API。
+
+DeepSeek Key 建议通过 Streamlit 的 **App settings → Secrets** 配置（不要提交到 Git）：
+
+```toml
+DEEPSEEK_API_KEY = "sk-..."
+```
+
+> 地点目前仅随结果保存，未做经纬度或真太阳时校正。人生 K 线属于传统文化模型的可视化结果，仅供学习与娱乐，不应用于医疗、投资或其他重要决策。
+
+### Streamlit Community Cloud 一键部署
+
+合并 PR 后可以直接部署，无需手工提交 `node_modules`：`requirements.txt` 安装 Python 包，`packages.txt` 安装 Node.js/npm，应用首次启动时根据 `package-lock.json` 自动执行 `npm ci --omit=dev`。
+
+1. 在 [Streamlit Community Cloud](https://share.streamlit.io/) 选择本仓库和已合并的分支。
+2. **Main file path** 填写 `streamlit_app.py`，点击 **Deploy**。
+3. 首次启动需要下载 npm 依赖，通常会比后续重启稍慢；基础排盘无需 Secrets，使用 AI 解读时需配置 `DEEPSEEK_API_KEY`。
+
+部署前提是仓库为 Community Cloud 可访问的公开仓库，或部署账号已获得私有仓库授权；构建及首次启动环境还需要能够访问 PyPI、Debian 与 npm 软件源。
+
 ### 测试
 
 ```bash
@@ -41,11 +73,11 @@ pnpm test
 ## Docker 部署
 
 ```bash
-# 构建镜像
+# 构建 Streamlit 融合版镜像
 docker build -t qimen .
 
 # 运行容器
-docker run -p 3000:3000 qimen
+docker run -p 8501:8501 qimen
 ```
 
 ## 技术栈
