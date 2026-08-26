@@ -18,4 +18,5 @@ test('人生 K 线返回逐年、可解释且有界的融合结果', () => {
         assert.ok(point.juShu && point.door && point.star && point.god);
     }
     assert.match(result.bazi.pillars.day, /^[甲乙丙丁戊己庚辛壬癸]/);
+    assert.equal(result.queryPan.basicInfo.method, '时家');
 });
