@@ -67,6 +67,10 @@ def render_palace(pan: dict) -> None:
     """Render a responsive Luoshu grid with visual hierarchy and chart markers."""
     st.subheader("奇门九宫盘")
     cards = []
+
+    def palace_value(section: str, gong: str) -> str:
+        return escape(str(pan.get(section, {}).get(gong) or "—"))
+
     for gong in PALACE_ORDER:
         flags = []
         if pan.get("zhiFuGong") == gong:
@@ -78,18 +82,21 @@ def render_palace(pan: dict) -> None:
         if str(pan.get("maStar", {}).get("gong")) == gong:
             flags.append("驿马")
         badges = "".join(f'<span class="qm-badge">{escape(flag)}</span>' for flag in flags)
-        cards.append(f'''<section class="qm-card">
-          <header><b>{PALACE_NAMES[gong]}</b><span>{badges}</span></header>
-          <div class="qm-trio"><strong>{escape(str(pan.get("baShen", {}).get(gong, "—")))}</strong><strong>{escape(str(pan.get("jiuXing", {}).get(gong, "—")))}</strong><strong>{escape(str(pan.get("baMen", {}).get(gong, "—")))}</strong></div>
-          <div class="qm-stems"><span>天盘 <b>{escape(str(pan.get("tianPan", {}).get(gong, "—")))}</b></span><span>地盘 <b>{escape(str(pan.get("diPan", {}).get(gong, "—")))}</b></span><span>暗干 <b>{escape(str(pan.get("anGan", {}).get(gong, "—")))}</b></span></div>
-        </section>''')
-    st.markdown('''<style>
-      .qm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-bottom:1rem}
-      .qm-card{border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:.75rem;background:linear-gradient(145deg,rgba(255,180,60,.10),rgba(120,70,220,.06));min-height:130px}
-      .qm-card header{display:flex;justify-content:space-between;border-bottom:1px solid rgba(128,128,128,.22);padding-bottom:.4rem}.qm-badge{font-size:.68rem;background:#b54708;color:white;padding:.15rem .35rem;border-radius:99px;margin-left:.2rem}
-      .qm-trio,.qm-stems{display:flex;justify-content:space-between;gap:.3rem;margin-top:.8rem}.qm-trio strong{font-size:1.05rem}.qm-stems{font-size:.78rem;opacity:.82}
-      @media(max-width:640px){.qm-grid{gap:.3rem}.qm-card{padding:.45rem;min-height:115px}.qm-card header span{display:none}.qm-trio{flex-direction:column;margin-top:.4rem}.qm-trio strong{font-size:.8rem}.qm-stems{flex-direction:column;margin-top:.3rem}}
-    </style><div class="qm-grid">''' + "".join(cards) + "</div>", unsafe_allow_html=True)
+        # Keep tags flush-left: indented HTML is interpreted as a Markdown code block.
+        cards.append(
+            f'<section class="qm-card"><header><b>{PALACE_NAMES[gong]}</b><span>{badges}</span></header>'
+            f'<div class="qm-trio"><strong>{palace_value("baShen", gong)}</strong><strong>{palace_value("jiuXing", gong)}</strong><strong>{palace_value("baMen", gong)}</strong></div>'
+            f'<div class="qm-stems"><span>天盘 <b>{palace_value("tianPan", gong)}</b></span><span>地盘 <b>{palace_value("diPan", gong)}</b></span><span>暗干 <b>{palace_value("anGan", gong)}</b></span></div></section>'
+        )
+    styles = """<style>
+.qm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-bottom:1rem}
+.qm-card{border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:.75rem;background:linear-gradient(145deg,rgba(255,180,60,.10),rgba(120,70,220,.06));min-height:130px}
+.qm-card header{display:flex;justify-content:space-between;border-bottom:1px solid rgba(128,128,128,.22);padding-bottom:.4rem}.qm-badge{font-size:.68rem;background:#b54708;color:white;padding:.15rem .35rem;border-radius:99px;margin-left:.2rem}
+.qm-trio,.qm-stems{display:flex;justify-content:space-between;gap:.3rem;margin-top:.8rem}.qm-trio strong{font-size:1.05rem}.qm-stems{font-size:.78rem;opacity:.82}
+@media(max-width:640px){.qm-grid{gap:.3rem}.qm-card{padding:.45rem;min-height:115px}.qm-card header span{display:none}.qm-trio{flex-direction:column;margin-top:.4rem}.qm-trio strong{font-size:.8rem}.qm-stems{flex-direction:column;margin-top:.3rem}}
+</style>"""
+    # st.html is intended for HTML/CSS and avoids Markdown turning nested tags into text.
+    st.html(styles + '<div class="qm-grid">' + "".join(cards) + "</div>")
 
 
 st.set_page_config(page_title="八字 · 人生 K 线 · 奇门", page_icon="☯", layout="wide")
