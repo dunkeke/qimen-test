@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
+    "streamlit": "streamlit run streamlit_app.py",
     "test": "node --test"
   },
   "repository": {
