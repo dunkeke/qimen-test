@@ -23,6 +23,7 @@ def build_prompt(pan: dict, question: str) -> str:
         "地盘": pan.get("diPan"),
         "空亡": pan.get("kongWangZhi"),
         "驿马": pan.get("maStar"),
+        "四害": pan.get("siHai"),
         "程序格局": pan.get("geju"),
     }
     return (

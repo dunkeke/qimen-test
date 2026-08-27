@@ -37,14 +37,23 @@
     var circleContent = typeof emptyContent !== 'undefined' ? emptyContent : '空';
     var showCircle = typeof showEmptyCircle !== 'undefined' ? showEmptyCircle : false;
     var showMaStar = typeof showMaStar !== 'undefined' ? showMaStar : false;
+    var displayHarms = typeof fourHarms !== 'undefined' && Array.isArray(fourHarms) ? fourHarms : [];
+    var hasFourHarmsVoid = displayHarms.some(function(harm) { return harm.type === '空亡'; });
     %>
     <div class="gong-tianganfang">
         <% if (showMaStar) { %><span class="circle-mark green-circle">马</span><% } %>
-        <% if (showCircle) { %><span class="circle-mark <%= circleType === 'gray' ? 'grey-circle' : 'yellow-circle' %>"><%= circleContent %></span><% } %>
+        <% if (showCircle && !hasFourHarmsVoid) { %><span class="circle-mark <%= circleType === 'gray' ? 'grey-circle' : 'yellow-circle' %>"><%= circleContent %></span><% } %>
     </div>
     
     <!-- 天干方位2 - 隐藏元素 -->
     <div class="gong-tianganfang2"></div>
+
+    <!-- 四害 - 直接显示在宫格底部，title 中保留完整判定依据 -->
+    <div class="gong-harms">
+        <% displayHarms.forEach(function(harm) { %>
+            <span class="harm-badge harm-<%= harm.code || 'generic' %>" title="<%= harm.reason || '' %>"><%= harm.type %></span>
+        <% }); %>
+    </div>
     
     <!-- 八门 - 中间位置 -->
     <% 
