@@ -12,6 +12,7 @@ import plotly.express as px
 import streamlit as st
 
 from deepseek_client import interpret
+from export_image import generate_qimen_report_png
 
 ROOT = Path(__file__).resolve().parent
 PALACE_ORDER = ("4", "9", "2", "3", "5", "7", "8", "1", "6")
@@ -61,6 +62,12 @@ def calculate(payload: str) -> dict:
     if result.returncode:
         raise RuntimeError(result.stderr.strip() or "排盘程序执行失败")
     return json.loads(result.stdout)
+
+
+@st.cache_data(show_spinner=False)
+def build_export_image(pan_payload: str, question: str, ai_reading: str) -> bytes:
+    """Cache the deterministic PNG so a download-button rerun stays fast."""
+    return generate_qimen_report_png(json.loads(pan_payload), question, ai_reading)
 
 
 def configured_api_key() -> str:
@@ -237,7 +244,27 @@ if "chart_result" in st.session_state:
         except (ValueError, RuntimeError) as error:
             st.error(str(error))
     if st.session_state.get("ai_reading"):
-        st.markdown(st.session_state["ai_reading"])
+        ai_reading = st.session_state["ai_reading"]
+        st.markdown(ai_reading)
+        try:
+            export_png = build_export_image(
+                json.dumps(query_pan, ensure_ascii=False, sort_keys=True),
+                result.get("question", ""),
+                ai_reading,
+            )
+            chart_date = str(query_pan.get("basicInfo", {}).get("date", ""))
+            date_digits = "".join(character for character in chart_date if character.isdigit())
+            st.download_button(
+                "下载奇门盘 + AI 解读长图",
+                data=export_png,
+                file_name=f"qimen-ai-{date_digits[:12] or 'report'}.png",
+                mime="image/png",
+                type="primary",
+                use_container_width=True,
+            )
+            st.caption("导出为一张 PNG 长图，包含占卦信息、九宫盘、四害标注及完整 AI 解读。")
+        except (OSError, ValueError) as error:
+            st.warning(f"暂时无法生成导出图片：{error}")
     st.info(result["disclaimer"])
 elif not submitted:
     st.info("请在左侧填写出生资料并点击“开始融合排盘”。")
