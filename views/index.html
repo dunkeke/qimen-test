@@ -91,6 +91,13 @@
             <div class="col-md-12">
                 <!-- 奇门九宫图 -->
                 <div class="qimen-pan">
+                    <% var fourHarmSummary = qimen.siHai && qimen.siHai.summary ? qimen.siHai.summary : { total: 0, affectedGongs: [], counts: {} }; %>
+                    <div class="four-harm-overview" aria-label="本盘四害摘要">
+                        <span class="four-harm-total"><small>本盘四害</small><strong><%= fourHarmSummary.total || 0 %></strong><em><%= (fourHarmSummary.affectedGongs || []).length %> 宫受影响</em></span>
+                        <% ['空亡', '门迫', '击刑', '入墓'].forEach(function(type) { %>
+                            <span class="four-harm-count harm-summary-<%= type === '空亡' ? 'kong-wang' : type === '门迫' ? 'men-po' : type === '击刑' ? 'ji-xing' : 'ru-mu' %>"><b><%= type %></b><em><%= fourHarmSummary.counts[type] || 0 %></em></span>
+                        <% }); %>
+                    </div>
                     <div class="pan-outer">
                         <div class="pan-grid">
                             <!-- A. 第一行 - 4,9,2 -->
@@ -112,7 +119,8 @@
                                     isZhiFu: qimen.zhiFuGong === '4',
                                     isZhiShi: qimen.zhiShiGong === '4',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '4',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['4'] : []
                                 }) %>
                             </div>
 
@@ -134,7 +142,8 @@
                                     isZhiFu: qimen.zhiFuGong === '9',
                                     isZhiShi: qimen.zhiShiGong === '9',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '9',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['9'] : []
                                 }) %>
                             </div>
 
@@ -156,7 +165,8 @@
                                     isZhiFu: qimen.zhiFuGong === '2',
                                     isZhiShi: qimen.zhiShiGong === '2',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '2',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['2'] : []
                                 }) %>
                             </div>
 
@@ -179,7 +189,8 @@
                                     isZhiFu: qimen.zhiFuGong === '3',
                                     isZhiShi: qimen.zhiShiGong === '3',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '3',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['3'] : []
                                 }) %>
                             </div>
 
@@ -201,7 +212,8 @@
                                     isZhiFu: qimen.zhiFuGong === '5',
                                     isZhiShi: qimen.zhiShiGong === '5',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '5',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['5'] : []
                                 }) %>
                             </div>
 
@@ -223,7 +235,8 @@
                                     isZhiFu: qimen.zhiFuGong === '7',
                                     isZhiShi: qimen.zhiShiGong === '7',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '7',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['7'] : []
                                 }) %>
                             </div>
 
@@ -246,7 +259,8 @@
                                     isZhiFu: qimen.zhiFuGong === '8',
                                     isZhiShi: qimen.zhiShiGong === '8',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '8',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['8'] : []
                                 }) %>
                             </div>
 
@@ -268,7 +282,8 @@
                                     isZhiFu: qimen.zhiFuGong === '1',
                                     isZhiShi: qimen.zhiShiGong === '1',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '1',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['1'] : []
                                 }) %>
                             </div>
 
@@ -290,7 +305,8 @@
                                     isZhiFu: qimen.zhiFuGong === '6',
                                     isZhiShi: qimen.zhiShiGong === '6',
                                     showMaStar: qimen.maStar && qimen.maStar.gong === '6',
-                                    dayXunShou: qimen.dayXunShou
+                                    dayXunShou: qimen.dayXunShou,
+                                    fourHarms: qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong['6'] : []
                                 }) %>
                             </div>
                         </div>
@@ -387,10 +403,15 @@
                                             <% if (qimen.jiuGongAnalysis[i].anGan) { %><strong>暗干:</strong> <%= qimen.jiuGongAnalysis[i].anGan %><% } %></p>
                                             <p>
                                                 <% if (qimen.jiuGongAnalysis[i].keYing) { %><span class="label label-<%= qimen.jiuGongAnalysis[i].keYing.jiXiong === 'ji' ? 'success' : qimen.jiuGongAnalysis[i].keYing.jiXiong === 'xiong' ? 'danger' : 'default' %>"><%= qimen.jiuGongAnalysis[i].keYing.name %></span> <% } %>
-                                                <% if (qimen.jiuGongAnalysis[i].menPo) { %><span class="label label-danger">门迫</span> <% } %>
-                                                <% if (qimen.jiuGongAnalysis[i].kongWang) { %><span class="label label-default">空亡</span> <% } %>
+                                                <% var palaceHarms = qimen.siHai && qimen.siHai.byGong ? qimen.siHai.byGong[String(i)] || [] : []; %>
+                                                <% palaceHarms.forEach(function(harm) { %><span class="harm-badge harm-<%= harm.code || 'generic' %>" title="<%= harm.reason || '' %>"><%= harm.type %></span> <% }); %>
                                                 <% if (qimen.jiuGongAnalysis[i].yiMa) { %><span class="label label-info">驿马</span> <% } %>
                                             </p>
+                                            <% if (palaceHarms.length) { %>
+                                                <ul class="harm-reasons">
+                                                    <% palaceHarms.forEach(function(harm) { %><li><strong><%= harm.type %>：</strong><%= harm.reason %></li><% }); %>
+                                                </ul>
+                                            <% } %>
                                             <p class="gong-explain"><%= qimen.jiuGongAnalysis[i].explain || '暂无解释' %></p>
                                         </div>
                                     </div>
@@ -511,6 +532,9 @@
                                 <li>八门的性质: 休、生、开、景为吉门；伤、杜、死、惊为凶门</li>
                                 <li>九星的属性与作用</li>
                             </ul>
+
+                            <h4>四害标注</h4>
+                            <p>宫格会直接标出空亡、门迫、击刑与入墓；鼠标停留在标签上可查看程序判定依据。不同门派口径可能存在差异，本工具采用常用时家转盘口径。</p>
                         </div>
                     </div>
                 </div>

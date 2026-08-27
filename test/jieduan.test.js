@@ -62,11 +62,11 @@ function basePan(overrides) {
     }, overrides || {});
 }
 
-test('六仪击刑：地盘戊落震三宫', () => {
-    const geju = jd.detectGeju(basePan({ diPan: { '3': '戊' } }));
+test('六仪击刑：天盘戊落震三宫', () => {
+    const geju = jd.detectGeju(basePan({ tianPan: { '3': '戊' } }));
     assert.ok(geju.some(g => g.name === '六仪击刑' && g.gong === '3'));
     // 反例：戊不在击刑宫则不命中
-    const geju2 = jd.detectGeju(basePan({ diPan: { '1': '戊' } }));
+    const geju2 = jd.detectGeju(basePan({ tianPan: { '1': '戊' } }));
     assert.ok(!geju2.some(g => g.name === '六仪击刑'));
 });
 

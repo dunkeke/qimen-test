@@ -124,18 +124,76 @@ body {
 .gong-content {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr .55fr;
     grid-template-areas:
         "gong-dizhi  gong-bashen  gong-tianganfang"
         "gong-dizhi2 gong-jiuxing gong-tianganfang2"
         "gong-gongname2 gong-bamen gong-tiangan"
-        "gong-gongname gong-number gong-dipan";
+        "gong-gongname gong-number gong-dipan"
+        "gong-harms gong-harms gong-harms";
     height: 100%;
     width: 100%;
     position: relative;
     padding: 4px;
     gap: 0;
 }
+
+/* 宫内四害标记 */
+.gong-harms {
+    grid-area: gong-harms;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 2px;
+    min-height: 18px;
+}
+
+.harm-badge {
+    display: inline-block;
+    padding: 1px 4px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
+.harm-kong-wang { color: #65568d; background: #f0edf7; border-color: #d8d1e8; }
+.harm-men-po { color: #a75913; background: #fff3e5; border-color: #efc99e; }
+.harm-ji-xing { color: #a43125; background: #faeae8; border-color: #e9b4ae; }
+.harm-ru-mu { color: #70442f; background: #f3ebe7; border-color: #d9c1b5; }
+
+/* 四害全盘摘要 */
+.four-harm-overview {
+    display: grid;
+    grid-template-columns: 1.35fr repeat(4, 1fr);
+    gap: 8px;
+    max-width: 680px;
+    margin: 0 auto 12px;
+}
+
+.four-harm-overview > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 7px 9px;
+    border: 1px solid #e4e0dc;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.four-harm-total { background: linear-gradient(135deg, #fbefeb, #fff7e9) !important; }
+.four-harm-total small, .four-harm-overview em { font-style: normal; font-size: 11px; color: #777; }
+.four-harm-total strong { font-size: 18px; color: #a33d2e; }
+.four-harm-count { border-bottom-width: 3px !important; }
+.four-harm-count b { font-size: 12px; }
+.harm-summary-kong-wang { border-bottom-color: #71639a !important; }
+.harm-summary-men-po { border-bottom-color: #d27b24 !important; }
+.harm-summary-ji-xing { border-bottom-color: #c44332 !important; }
+.harm-summary-ru-mu { border-bottom-color: #8a5b43 !important; }
+.harm-reasons { margin: 7px 0; padding-left: 18px; color: #6b5147; font-size: 12px; }
 
 /* 地支(暗干) - 左上角灰色 */
 .gong-dizhi {
@@ -410,6 +468,19 @@ body {
         font-size: 11px;
         padding: 2px 4px;
     }
+
+    .four-harm-overview {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+    }
+
+    .four-harm-total { grid-column: 1 / -1; }
+
+    .four-harm-count {
+        flex-direction: column;
+        gap: 1px !important;
+        padding: 5px !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -425,6 +496,8 @@ body {
     .legend-box {
         font-size: 11px;
     }
+
+    .harm-badge { font-size: 8px; padding: 1px 2px; }
 }
 
 /* 标签样式 */
