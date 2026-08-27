@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends nodejs npm \
+RUN apt-get update && apt-get install -y --no-install-recommends nodejs npm fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY package*.json ./
